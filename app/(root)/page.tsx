@@ -10,7 +10,7 @@ export default function Home() {
   <div>
       
     <div className="md:pl-72">
-      Navigation Headbar & Teacher Mode
+      Database Setup with Prisma & Plannet Scale
       <ModeToggle />
       <UserButton afterSignOutUrl="/"/>
     </div>
