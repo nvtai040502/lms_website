@@ -10,7 +10,7 @@ export default function Home() {
   <div>
       
     <div className="md:pl-72">
-      Dynamic Navigation SideBar
+      Navigation Headbar & Teacher Mode
       <ModeToggle />
       <UserButton afterSignOutUrl="/"/>
     </div>

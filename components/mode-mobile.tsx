@@ -1,19 +1,20 @@
+"use client"
 import { AlignJustify } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import Sidebar from "./sidebar/sidebar";
+
+import Sidebar from "./sidebar";
+
 
 const ModeMobile = () => {
   return ( 
-    <div className="absolute">
+    <div className="flex items-center ">
       <Sheet>
         <SheetTrigger>
-          <Button variant="outline">
-            <AlignJustify/>
-          </Button>
+            <AlignJustify size={30} />
         </SheetTrigger>
         <SheetContent side="left">
-          <Sidebar></Sidebar>
+          <Sidebar />          
         </SheetContent>
       </Sheet>
     </div>

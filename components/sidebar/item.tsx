@@ -3,19 +3,14 @@ import { LucideIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-
-interface SidebarItemProps {
-  icon: LucideIcon
-  label: string
-  href: string
-}
+import { SidebarRoute } from "@/type";
 
 const SidebarItem = ({
-  icon,
+  icon: Icon,
   label,
   href
-}: SidebarItemProps) => {
-  const Icon = icon
+}: SidebarRoute) => {
+  
  
   const router = useRouter()
   const pathname = usePathname()
@@ -24,7 +19,8 @@ const SidebarItem = ({
     pathname === href
 
   const onClick = () => {
-  router.push(href)
+  {!isActive && router.push(href)}
+  
   }
   return ( 
     <Button 

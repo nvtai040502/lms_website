@@ -1,23 +1,33 @@
-"use client"; 
+"use client"
+import SidebarHeader from "./header"
+import SidebarItem from "./item"
+import studentMode from "@/lib/mode/student-mode";
+import { usePathname } from "next/navigation";
+import teacherMode from "@/lib/mode/teacher-mode";
 
-import Sidebar from "./sidebar";
-import ModeMobile from "../mode-mobile";
+const Sidebar = () => {
+  const pathname = usePathname()
+  const isPageTeacher = pathname.includes("/teacher")
+  const mode = isPageTeacher ? teacherMode : studentMode
 
-const DynamicSidebar = () => {
-  
-  return (
-    <div>
-      
-      <div className="hidden absolute w-72 h-screen md:flex flex-col border-r-2">
-        <Sidebar></Sidebar>
+  return ( 
+    <div className="absolute w-72 h-screen flex-col md:border-r-2">
+      <div className="h-14">
+        <SidebarHeader />
       </div>
       
-      <div className="md:hidden absolute">
-        <ModeMobile></ModeMobile>
+      <div className="my-2">
+        {mode.routes.map((route) => (
+          
+        <SidebarItem 
+          icon={route.icon}
+          label={route.label}
+          href={route.href}
+        />
+        ))}
       </div>
-      
     </div>
-    
-  )
+   );
 }
-export default DynamicSidebar
+ 
+export default Sidebar;

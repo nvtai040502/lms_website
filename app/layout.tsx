@@ -3,7 +3,9 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 import { ThemeProvider } from '@/components/providers/theme-provider'
-import DynamicSidebar from '@/components/sidebar'
+import Sidebar from '@/components/sidebar'
+import Headbar from '@/components/headbar'
+import StudentMode from '@/lib/mode/student-mode'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -28,8 +30,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <DynamicSidebar />
-            
+            <div className='hidden md:flex'>
+              <Sidebar />
+            </div>
+            <Headbar />
             {children}
           </ThemeProvider>
         </body>
