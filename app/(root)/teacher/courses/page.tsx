@@ -2,18 +2,19 @@
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import axios from "axios"
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { useRouter } from "next/navigation"
 const formScheme = z.object({
   title: z.string().min(2, {
     message: "Title must be at least 2 characters"
@@ -31,8 +32,11 @@ const CoursePage = () => {
     }
   })
 
+  const router = useRouter()
   const onSubmit = (values: z.infer<typeof formScheme>) => {
-    console.log(values)
+    axios.post("../api/courses", values)
+    
+    
   }
   return (
     <Dialog>
