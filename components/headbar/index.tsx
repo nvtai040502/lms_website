@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import ModeMobile from "../mode-mobile";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
+import { ModeToggle } from "../mode-toggle";
 
 const Headbar = () => {
   const router = useRouter()
@@ -15,16 +16,20 @@ const Headbar = () => {
       <div className="md:hidden">
       <ModeMobile />
       </div>
-      <div className="inline-flex items-center gap-2 ">
+      <div className="inline-flex items-center gap-4 ">
         {isTeacherPage ? (
           <Link href="/">
-            <Button size="sm" variant="default"><LogOut/></Button>
+            <Button size="sm" variant="secondary">
+              <LogOut className="h-4 w-4 mr-2" />
+              Exit
+            </Button>
           </Link>
         ) : (
           <Link href="/teacher">
-            <Button size="sm" variant="default">Teacher Mode</Button>
+            <Button size="sm" variant="secondary">Teacher Mode</Button>
           </Link>
         )}
+        <ModeToggle />
         <UserButton afterSignOutUrl="/" />
       </div>
       

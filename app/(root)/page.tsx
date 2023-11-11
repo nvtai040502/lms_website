@@ -10,7 +10,7 @@ export default function Home() {
   <div>
       
     <div className="md:pl-72">
-      Database Setup with Prisma & Plannet Scale
+      Modal Create New Course Front End
       <ModeToggle />
       <UserButton afterSignOutUrl="/"/>
     </div>
