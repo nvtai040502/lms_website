@@ -9,7 +9,7 @@ export async function PATCH (req:Request) {
       return null
     }
     
-    const { title, description } = await req.json()
+    const { title, description, imageUrl } = await req.json()
     
     const course = await db.course.update({
       where: {
@@ -18,6 +18,7 @@ export async function PATCH (req:Request) {
       data: {
         title: title,
         description: description,
+        imageUrl: imageUrl,
       }
     })
     return NextResponse.json(course)

@@ -2,6 +2,7 @@ import FormTitle from "@/components/form/form-title"
 import FormDescription from "@/components/form/form-description"
 import { db } from "@/lib/db"
 import { redirect } from "next/navigation"
+import FormImage from "@/components/form/form-image"
 
 const CourseIdPage = async ({
   params
@@ -22,6 +23,7 @@ const CourseIdPage = async ({
     <div>
       <FormTitle course={course}/>
       <FormDescription course={course}/>
+      <FormImage course={course} />
     </div>
     )
 }
