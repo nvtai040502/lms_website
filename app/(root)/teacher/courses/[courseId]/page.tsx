@@ -1,5 +1,5 @@
 import FormTitle from "@/components/form/form-title"
-
+import FormDescription from "@/components/form/form-description"
 import { db } from "@/lib/db"
 import { redirect } from "next/navigation"
 
@@ -20,8 +20,8 @@ const CourseIdPage = async ({
 
   return (
     <div>
-    <FormTitle course={course}/>
-    
+      <FormTitle course={course}/>
+      <FormDescription course={course}/>
     </div>
     )
 }

@@ -11,23 +11,23 @@ import axios from 'axios';
 import { useToast } from '../ui/use-toast';
 import { Course } from '@prisma/client';
 const formScheme = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters"
+  description: z.string().min(2, {
+    message: "Description must be at least 2 characters"
   })
 })
 
-const FormTitle = ({course}: {course: Course}) => {
+const FormDescription = ({course}: {course: Course}) => {
   const onSubmit = async (values: z.infer<typeof formScheme>) => {
     await axios.patch(`/api/courses/${course.id}`, values)
     toast({
-      title: "Updated Title Course Success",
+      title: "Updated Description Course Success",
     })
   }
 
   const form = useForm<z.infer<typeof formScheme>>({
     resolver: zodResolver(formScheme),
     defaultValues: {
-      title: ""
+      description: ""
     }
   })
 
@@ -41,7 +41,7 @@ const FormTitle = ({course}: {course: Course}) => {
     
     setIsEditting(true)
     
-    form.setValue("title", course.title)
+    form.setValue("description", course.description)
   }
   const { toast } = useToast()
   
@@ -52,7 +52,7 @@ const FormTitle = ({course}: {course: Course}) => {
       
       <div className='dark:bg-gray-600 p-4  mt-4 grid gap-2  w-full'>
         <div className='flex justify-between items-center font-medium'>
-          Course Title
+          Course Description
           { isEditting ? (
           
           <Button onClick={onClose} variant="secondary" size="sm" disabled={isSubmitting}>
@@ -65,7 +65,7 @@ const FormTitle = ({course}: {course: Course}) => {
           <Button onClick={onClick} variant="secondary" size="sm">
             
             <Pencil className='h-4 w-4 mr-2'/>
-            Edit title
+            Edit description
           </Button>
           
         )}
@@ -73,7 +73,7 @@ const FormTitle = ({course}: {course: Course}) => {
         
         { !isEditting ? (
           <div className=' text-sm'>
-              {course.title}
+              {course.description}
           </div>
         ): (
         
@@ -82,7 +82,7 @@ const FormTitle = ({course}: {course: Course}) => {
             <FormField 
               disabled={isSubmitting}
               control={form.control}
-              name="title"
+              name="description"
               render={({ field }) => (
                 <FormItem>
                   
@@ -109,4 +109,4 @@ const FormTitle = ({course}: {course: Course}) => {
    );
 }
  
-export default FormTitle
+export default FormDescription

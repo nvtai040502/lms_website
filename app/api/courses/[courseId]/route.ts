@@ -9,14 +9,15 @@ export async function PATCH (req:Request) {
       return null
     }
     
-    const { title } = await req.json()
+    const { title, description } = await req.json()
     
     const course = await db.course.update({
       where: {
         userId: userId
       },
       data: {
-        title: title
+        title: title,
+        description: description,
       }
     })
     return NextResponse.json(course)
