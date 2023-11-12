@@ -60,7 +60,7 @@ const CoursePage = () => {
                   <FormLabel>Course Title</FormLabel>
                   <FormControl>
                     <Input 
-                    className="dark:bg-zinc-500 bg-zinc-300/50"
+                    className="dark:bg-zinc-700 bg-zinc-300/50"
                     placeholder="Enter title for your course" 
                     {...field} />
                   </FormControl>
@@ -77,7 +77,7 @@ const CoursePage = () => {
                   <FormLabel>Course Category</FormLabel>
                   <FormControl>
                     <Input 
-                    className="dark:bg-zinc-500 bg-zinc-300/50 "
+                    className="dark:bg-zinc-700 bg-zinc-300/50 "
                     placeholder="Enter category of your course" 
                     {...field} />
                   </FormControl>

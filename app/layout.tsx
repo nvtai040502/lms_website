@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/providers/theme-provider'
 import Sidebar from '@/components/sidebar'
 import Headbar from '@/components/headbar'
 import StudentMode from '@/lib/mode/student-mode'
+import { Toaster } from "@/components/ui/toaster"
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -36,6 +37,7 @@ export default function RootLayout({
             <Headbar />
            
             {children}
+            <Toaster />
             
           </ThemeProvider>
         </body>
