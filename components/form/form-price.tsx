@@ -10,27 +10,24 @@ import * as z from "zod"
 import axios from 'axios';
 import { useToast } from '../ui/use-toast';
 import { Course } from '@prisma/client';
-import { FileUpload } from '../file-upload';
-import Image from 'next/image';
+import { formatPrice } from '@/lib/format-price';
 const formScheme = z.object({
-  imageUrl: z.string().min(2, {
-    message: "ImageUrl must be at least 2 characters"
-  })
+  price: z.coerce.number()
 })
 
-const FormImage = ({course}: {course: Course}) => {
+const FormPrice = ({course}: {course: Course}) => {
   const onSubmit = async (values: z.infer<typeof formScheme>) => {
     await axios.patch(`/api/courses/${course.id}`, values)
     toast({
-      title: "Updated Image Course Success",
+      title: "Updated price Course Success",
     })
   }
 
   const form = useForm<z.infer<typeof formScheme>>({
     resolver: zodResolver(formScheme),
     defaultValues: {
-      imageUrl: ""
-    }
+      price: course.price || undefined,
+    },
   })
 
   const {isSubmitting, isValid}  = form.formState
@@ -42,8 +39,7 @@ const FormImage = ({course}: {course: Course}) => {
   const onClick = () => {
     
     setIsEditting(true)
-    
-    
+      
   }
   const { toast } = useToast()
   
@@ -54,7 +50,8 @@ const FormImage = ({course}: {course: Course}) => {
       
       
         <div className='flex justify-between items-center font-medium'>
-          Course Image
+            Course Price
+          
           { isEditting ? (
           
           <Button onClick={onClose} variant="secondary" size="sm" disabled={isSubmitting}>
@@ -67,42 +64,35 @@ const FormImage = ({course}: {course: Course}) => {
           <Button onClick={onClick} variant="secondary" size="sm">
             
             <Pencil className='h-4 w-4 mr-2'/>
-            Edit image
+            Edit price
           </Button>
           
         )}
         </div>
         
         { !isEditting ? (
-          course.imageUrl && (
-            <div className="relative h-40 w-full object-cover">
-              <Image
-                fill
-                src={course.imageUrl}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                alt="Upload"
-              />
-            </div>
-          )
+          <div className=' text-sm'>
+              {course.price ?  formatPrice(course.price) : "No Price"}
+          </div>
         ): (
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField 
-              
+              disabled={isSubmitting}
               control={form.control}
-              name="imageUrl"
+              name="price"
               render={({ field }) => (
                 <FormItem>
                   
                   <FormControl>
-                  <div className="relative w-full  bg-white">
-                    <FileUpload
-                      endpoint="courseImage"
-                      value={field.value}
-                      onChange={field.onChange} 
-                    />
-                    </div>
+                    <Input 
+                    type="number"
+                    className="dark:bg-zinc-700 bg-zinc-300/50"
+                    step="1000"
+                    placeholder="Set a price for your course"
+                  
+                    {...field} />
                   </FormControl>
                   
                   <FormMessage />
@@ -119,4 +109,4 @@ const FormImage = ({course}: {course: Course}) => {
    );
 }
  
-export default FormImage
+export default FormPrice

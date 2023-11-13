@@ -27,7 +27,7 @@ const FormDescription = ({course}: {course: Course}) => {
   const form = useForm<z.infer<typeof formScheme>>({
     resolver: zodResolver(formScheme),
     defaultValues: {
-      description: ""
+      description: course.description || undefined
     }
   })
 
@@ -40,8 +40,9 @@ const FormDescription = ({course}: {course: Course}) => {
   const onClick = () => {
     
     setIsEditting(true)
-    
-    form.setValue("description", course.description)
+    if (course.description){ 
+      
+    }
   }
   const { toast } = useToast()
   

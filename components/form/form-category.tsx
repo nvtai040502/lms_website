@@ -27,7 +27,7 @@ const FormCategory = ({course, categoryName}: {course: Course, categoryName: str
   const form = useForm<z.infer<typeof formScheme>>({
     resolver: zodResolver(formScheme),
     defaultValues: {
-      category: ""
+      category: categoryName || undefined
     }
   })
 
@@ -41,7 +41,6 @@ const FormCategory = ({course, categoryName}: {course: Course, categoryName: str
     
     setIsEditting(true)
     
-    form.setValue("category", categoryName)
   }
   const { toast } = useToast()
   
@@ -87,7 +86,7 @@ const FormCategory = ({course, categoryName}: {course: Course, categoryName: str
                   <FormControl>
                     <Input 
                     
-                    className="dark:bg-zinc-700 bg-slate-300"
+                    className="dark:bg-zinc-700 bg-zinc-300/50"
                     
                     placeholder="Enter title for your course" 
                     {...field} />

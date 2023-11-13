@@ -27,7 +27,7 @@ const FormTitle = ({course}: {course: Course}) => {
   const form = useForm<z.infer<typeof formScheme>>({
     resolver: zodResolver(formScheme),
     defaultValues: {
-      title: ""
+      title: course.title 
     }
   })
 
@@ -41,7 +41,7 @@ const FormTitle = ({course}: {course: Course}) => {
     
     setIsEditting(true)
     
-    form.setValue("title", course.title)
+    
   }
   const { toast } = useToast()
   

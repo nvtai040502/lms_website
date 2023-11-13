@@ -18,8 +18,10 @@ model Course {
 
   userId String 
   title String
-  description String
-  imageUrl String @db.Text
+  description String? @db.Text
+  imageUrl String? @db.Text
+  price Float?
+
 
   categoryId String
   category Category @relation(fields: [categoryId], references: [id])

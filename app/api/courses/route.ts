@@ -24,8 +24,6 @@ export async function POST (req:Request) {
     const course = await db.course.create({
       data: {
         title: title,
-        description: "test",
-        imageUrl: "test", 
         userId: userId,
         categoryId: categoryDB.id
       }
