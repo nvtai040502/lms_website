@@ -12,7 +12,7 @@ const Headbar = () => {
   const pathname = usePathname()
   const isTeacherPage = pathname.includes("/teacher")
   return ( 
-    <div className="items-center flex flex-row w-screen h-14 border-b-2 justify-between p-2 md:justify-end">
+    <div className="items-center flex flex-row w-full h-14 border-b-2 justify-between p-2 md:justify-end">
       <div className="md:hidden">
       <ModeMobile />
       </div>

@@ -47,10 +47,8 @@ const FormCategory = ({course, categoryName}: {course: Course, categoryName: str
   
 
   return ( 
-    <div>
+    <div className='dark:bg-gray-600 rounded-md bg-gray-200 grid gap-y-2 p-4'>
       
-      
-      <div className='dark:bg-gray-600 p-4  mt-4 grid gap-2  w-full'>
         <div className='flex justify-between items-center font-medium'>
           Course Category
           { isEditting ? (
@@ -89,7 +87,7 @@ const FormCategory = ({course, categoryName}: {course: Course, categoryName: str
                   <FormControl>
                     <Input 
                     
-                    className="dark:bg-zinc-700 bg-zinc-300/50"
+                    className="dark:bg-zinc-700 bg-slate-300"
                     
                     placeholder="Enter title for your course" 
                     {...field} />
@@ -104,7 +102,7 @@ const FormCategory = ({course, categoryName}: {course: Course, categoryName: str
           </form>
         </Form>
 )}
-        </div>
+        
     </div>
    );
 }

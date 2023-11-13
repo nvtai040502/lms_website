@@ -49,10 +49,10 @@ const FormImage = ({course}: {course: Course}) => {
   
 
   return ( 
-    <div>
+    <div className='dark:bg-gray-600 rounded-md bg-gray-200 grid gap-y-2 p-4'>
       
       
-      <div className='dark:bg-gray-600 p-4  mt-4 grid gap-2 w-10/12'>
+      
         <div className='flex justify-between items-center font-medium'>
           Course Image
           { isEditting ? (
@@ -114,7 +114,7 @@ const FormImage = ({course}: {course: Course}) => {
           </form>
         </Form>
 )}
-        </div>
+        
     </div>
    );
 }
