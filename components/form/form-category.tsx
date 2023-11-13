@@ -9,27 +9,25 @@ import { useForm } from 'react-hook-form';
 import * as z from "zod"
 import axios from 'axios';
 import { useToast } from '../ui/use-toast';
-import { Course } from '@prisma/client';
-import { FileUpload } from '../file-upload';
-import Image from 'next/image';
+import { Category, Course } from '@prisma/client';
 const formScheme = z.object({
-  imageUrl: z.string().min(2, {
-    message: "ImageUrl must be at least 2 characters"
+  category: z.string().min(2, {
+    message: "Description must be at least 2 characters"
   })
 })
 
-const FormImage = ({course}: {course: Course}) => {
+const FormCategory = ({course, categoryName}: {course: Course, categoryName: string}) => {
   const onSubmit = async (values: z.infer<typeof formScheme>) => {
     await axios.patch(`/api/courses/${course.id}`, values)
     toast({
-      title: "Updated Image Course Success",
+      title: "Updated Category Course Success",
     })
   }
 
   const form = useForm<z.infer<typeof formScheme>>({
     resolver: zodResolver(formScheme),
     defaultValues: {
-      imageUrl: ""
+      category: ""
     }
   })
 
@@ -43,7 +41,7 @@ const FormImage = ({course}: {course: Course}) => {
     
     setIsEditting(true)
     
-    
+    form.setValue("category", categoryName)
   }
   const { toast } = useToast()
   
@@ -52,9 +50,9 @@ const FormImage = ({course}: {course: Course}) => {
     <div>
       
       
-      <div className='dark:bg-gray-600 p-4  mt-4 grid gap-2 w-10/12'>
+      <div className='dark:bg-gray-600 p-4  mt-4 grid gap-2  w-full'>
         <div className='flex justify-between items-center font-medium'>
-          Course Image
+          Course Category
           { isEditting ? (
           
           <Button onClick={onClose} variant="secondary" size="sm" disabled={isSubmitting}>
@@ -67,42 +65,34 @@ const FormImage = ({course}: {course: Course}) => {
           <Button onClick={onClick} variant="secondary" size="sm">
             
             <Pencil className='h-4 w-4 mr-2'/>
-            Edit image
+            Edit category
           </Button>
           
         )}
         </div>
         
         { !isEditting ? (
-          course.imageUrl !== "test" && (
-            <div className="relative h-40 w-full object-cover">
-              <Image
-                fill
-                src={course.imageUrl}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                alt="Upload"
-              />
-            </div>
-          )
+          <div className=' text-sm'>
+              {categoryName}
+          </div>
         ): (
         
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField 
-              
+              disabled={isSubmitting}
               control={form.control}
-              name="imageUrl"
+              name="category"
               render={({ field }) => (
                 <FormItem>
                   
                   <FormControl>
-                  <div className="relative w-full  bg-white">
-                    <FileUpload
-                      endpoint="courseImage"
-                      value={field.value}
-                      onChange={field.onChange} 
-                    />
-                    </div>
+                    <Input 
+                    
+                    className="dark:bg-zinc-700 bg-zinc-300/50"
+                    
+                    placeholder="Enter title for your course" 
+                    {...field} />
                   </FormControl>
                   
                   <FormMessage />
@@ -119,4 +109,4 @@ const FormImage = ({course}: {course: Course}) => {
    );
 }
  
-export default FormImage
+export default FormCategory

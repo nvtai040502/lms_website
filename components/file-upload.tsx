@@ -18,11 +18,11 @@ export const FileUpload = ({
   const fileType = value?.split(".").pop()
   if (value && fileType !== "pdf") {
     return (
-      <div className="relative h-40 w-60 object-cover  ">
+      <div className="relative h-40 w-full object-cover">
       <Image
         fill
         src={value}
-        
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         alt="Upload"
       />
       <Button
@@ -38,14 +38,16 @@ export const FileUpload = ({
   }
 
   return (
-    <UploadDropzone
-      endpoint={endpoint}
-      onClientUploadComplete={(res) => {
-        onChange(res?.[0].url);
-      }}
-      onUploadError={(error: Error) => {
-        console.log(error);
-      }}
-    />
+    
+      <UploadDropzone
+        endpoint={endpoint}
+        onClientUploadComplete={(res) => {
+          onChange(res?.[0].url);
+        }}
+        onUploadError={(error: Error) => {
+          console.log(error);
+        }}
+      />
+    
   )
 }
