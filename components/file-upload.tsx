@@ -5,7 +5,7 @@ import { X } from "lucide-react";
 import { Button } from "./ui/button";
 
 interface FileUploadProps {
-  endpoint: "courseImage"
+  endpoint: "courseImage" | "courseAttachment"
   value: string
   onChange: (url?: string) => void
 }

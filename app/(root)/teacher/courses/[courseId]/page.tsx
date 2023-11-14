@@ -6,6 +6,7 @@ import FormImage from "@/components/form/form-image"
 import FormCategory from "@/components/form/form-category"
 import { LayoutDashboard } from "lucide-react"
 import FormPrice from "@/components/form/form-price"
+import FormAttachment from "@/components/form/form-attachment"
 
 
 const CourseIdPage = async ({
@@ -91,7 +92,7 @@ const CourseIdPage = async ({
               </h2>
             </div>
             <FormPrice course={course}/>
-
+            <FormAttachment course={course}/>
             
 
           </div>

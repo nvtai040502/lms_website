@@ -14,6 +14,10 @@ const handleAuth = () => {
 export const ourFileRouter = {
   courseImage: f({image: {maxFileSize: "4MB"}})
     .middleware(() => handleAuth())
+    .onUploadComplete(() => {}),
+
+  courseAttachment: f(["video", "image", "video", "audio", "pdf"])
+    .middleware(() => handleAuth())
     .onUploadComplete(() => {})
 } satisfies FileRouter;
  
