@@ -12,15 +12,18 @@ import { Grip, Pencil } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { ActionTooltip } from "@/components/action-tooltip";
 
 interface ChaptersListProps {
   items: Chapter[];
   onReorder: (updateData: { id: string; position: number }[]) => void;
+  onEdit: (id: string) => void
 };
 
 export const ChaptersList = ({
   items,
-  onReorder
+  onReorder,
+  onEdit
 }: ChaptersListProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [chapters, setChapters] = useState(items);
@@ -105,10 +108,12 @@ export const ChaptersList = ({
                       >
                         {chapter.isPublished ? "Published" : "Draft"}
                       </Badge>
-                      <Pencil
-                        
-                        className="w-4 h-4 cursor-pointer hover:opacity-75 transition"
-                      />
+                      <ActionTooltip label={`Edit ${chapter.title}`} side="top">
+                        <Pencil
+                          onClick={() => onEdit(chapter.id)}
+                          className="w-4 h-4 cursor-pointer hover:opacity-75 transition"
+                        />
+                      </ActionTooltip>
                     </div>
                   </div>
                 )}
