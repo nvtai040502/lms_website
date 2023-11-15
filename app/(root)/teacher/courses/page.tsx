@@ -15,6 +15,7 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useRouter } from "next/navigation"
+import Loading from "@/components/loading"
 const formScheme = z.object({
   title: z.string().min(2, {
     message: "Title must be at least 2 characters"
@@ -39,6 +40,8 @@ const CoursePage = () => {
     
   }
   return (
+    <div>
+    
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="secondary">New Course</Button>
@@ -92,6 +95,7 @@ const CoursePage = () => {
         
       </DialogContent>
     </Dialog>
+    </div>
   )
 }
 export default CoursePage;

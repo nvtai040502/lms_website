@@ -20,7 +20,7 @@ export async function POST (req:Request, {params}: {params: {courseId: string}})
       }
     })
 
-    const newPosition = lastChapter ? lastChapter.position : 1
+    const newPosition = lastChapter ? lastChapter.position + 1 : 0
 
     const chapter = await db.chapter.create({
       data: {

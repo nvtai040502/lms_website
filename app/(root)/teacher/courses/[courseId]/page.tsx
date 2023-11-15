@@ -35,12 +35,23 @@ const CourseIdPage = async ({
     return null
   }
 
+  const chapters = await db.chapter.findMany({
+    where: {
+      courseId: course.id
+    },
+    orderBy: {
+      position: "asc"
+    }
+    
+  })
+
   const requiredFields = [
     course.title,
     course.description,
     course.imageUrl,
     course.categoryId,
-    course.price
+    course.price,
+    chapters.length > 0 ? [chapters] : []
   ]
 
   const totalFields = requiredFields.length
@@ -82,7 +93,7 @@ const CourseIdPage = async ({
                 Course chapters
               </h2>
             </div>
-              <FormChapter course={course}/>
+              <FormChapter course={course} chapters= {chapters}/>
             <div className="flex items-center gap-x-2">
               <LayoutDashboard />
               <h2 className="text-xl">

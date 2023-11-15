@@ -3,31 +3,54 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LayoutGrid, Pencil, PlusCircle, PlusCircleIcon, X } from 'lucide-react';
+import { PlusCircleIcon, X } from 'lucide-react';
 import {  useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from "zod"
 import axios from 'axios';
-import { useToast } from '../ui/use-toast';
-import { Course } from '@prisma/client';
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "@hello-pangea/dnd";
+import { useToast } from '../../ui/use-toast';
+import { Chapter, Course } from '@prisma/client';
+import { ChaptersList } from './chapters-list';
+import Loading from '@/components/loading';
+
 const formScheme = z.object({
   title: z.string().min(2, {
     message: "Title must be at least 2 characters"
   }),
 })
 
-const FormChapter = ({course}: {course: Course}) => {
+interface FormChapterProps {
+  course: Course,
+  chapters: Chapter[]
+}
+
+const FormChapter = ({course, chapters}: FormChapterProps) => {
   const onSubmit = async (values: z.infer<typeof formScheme>) => {
     await axios.post(`/api/courses/${course.id}/chapters`, values)
     toast({
       title: "Updated Chapter Course Success",
     })
+  }
+
+  
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const onReorder = async (updateData: { id: string; position: number }[]) => {
+    try {
+      setIsUpdating(true);
+      await axios.patch(`/api/courses/${course.id}/chapters/reorder`, {
+        list: updateData
+      });
+      toast({
+        title: "Updated Chapter Course Success",
+      })
+    } catch {
+      toast({
+        title: "Something went wrong",
+      })
+    } finally {
+      setIsUpdating(false);
+    }
   }
 
   const form = useForm<z.infer<typeof formScheme>>({
@@ -48,11 +71,14 @@ const FormChapter = ({course}: {course: Course}) => {
   }
   const { toast } = useToast()
   
+  
 
   return ( 
     <div className='dark:bg-gray-600 rounded-md bg-gray-200 grid gap-y-2 p-4'>
       
-      
+      {isUpdating && (
+        <Loading />
+      )}
       
         <div className='flex justify-between items-center font-medium'>
             Course Chapter
@@ -76,8 +102,12 @@ const FormChapter = ({course}: {course: Course}) => {
         </div>
         
         { !isCreating ? (
-          <div className=' text-sm'>
-              
+          <div className=''>
+            <ChaptersList
+            
+            onReorder={onReorder}
+            items={chapters || []}
+          />
           </div>
         ): (
         
