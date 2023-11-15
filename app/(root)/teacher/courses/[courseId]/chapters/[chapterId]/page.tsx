@@ -1,3 +1,4 @@
+import ChapterFormDescription from "@/components/chapters-form/form-description";
 import ChapterFormTitle from "@/components/chapters-form/form-title";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
@@ -26,6 +27,8 @@ const ChapterIdPage = async ({params}: {params: {chapterId:string, courseId: str
     
     <div>
       <ChapterFormTitle course={course} chapter={chapter}/>
+      <ChapterFormDescription course={course} chapter={chapter}/>
+      
     </div>
    );
 }
