@@ -7,6 +7,7 @@ import FormCategory from "@/components/form/form-category"
 import { LayoutDashboard } from "lucide-react"
 import FormPrice from "@/components/form/form-price"
 import FormAttachment from "@/components/form/form-attachment"
+import FormChapter from "@/components/form/form-chapter"
 
 
 const CourseIdPage = async ({
@@ -81,10 +82,7 @@ const CourseIdPage = async ({
                 Course chapters
               </h2>
             </div>
-            <p>
-              To do chapters  
-            </p>            
-
+              <FormChapter course={course}/>
             <div className="flex items-center gap-x-2">
               <LayoutDashboard />
               <h2 className="text-xl">

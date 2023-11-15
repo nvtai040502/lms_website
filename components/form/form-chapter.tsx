@@ -3,44 +3,48 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LayoutGrid, Pencil, X } from 'lucide-react';
+import { LayoutGrid, Pencil, PlusCircle, PlusCircleIcon, X } from 'lucide-react';
 import {  useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from "zod"
 import axios from 'axios';
 import { useToast } from '../ui/use-toast';
 import { Course } from '@prisma/client';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "@hello-pangea/dnd";
 const formScheme = z.object({
-  description: z.string().min(2, {
-    message: "Description must be at least 2 characters"
-  })
+  title: z.string().min(2, {
+    message: "Title must be at least 2 characters"
+  }),
 })
 
-const FormDescription = ({course}: {course: Course}) => {
+const FormChapter = ({course}: {course: Course}) => {
   const onSubmit = async (values: z.infer<typeof formScheme>) => {
-    await axios.patch(`/api/courses/${course.id}`, values)
+    await axios.post(`/api/courses/${course.id}/chapters`, values)
     toast({
-      title: "Updated Description Course Success",
+      title: "Updated Chapter Course Success",
     })
   }
 
   const form = useForm<z.infer<typeof formScheme>>({
     resolver: zodResolver(formScheme),
     defaultValues: {
-      description: course.description || undefined
+      title: ""
     }
   })
 
   const {isSubmitting, isValid}  = form.formState
 
-  const [isEditting, setIsEditting] = useState(false)
+  const [isCreating, setIsCreating] = useState(false)
   const onClose = () => {
-    setIsEditting(false)
+    setIsCreating(false)
   }
   const onClick = () => {
-    
-    setIsEditting(true)
-   
+    setIsCreating(true)
   }
   const { toast } = useToast()
   
@@ -51,9 +55,9 @@ const FormDescription = ({course}: {course: Course}) => {
       
       
         <div className='flex justify-between items-center font-medium'>
-            Course Description
+            Course Chapter
           
-          { isEditting ? (
+          { isCreating ? (
           
           <Button onClick={onClose} variant="secondary" size="sm" disabled={isSubmitting}>
             
@@ -64,16 +68,16 @@ const FormDescription = ({course}: {course: Course}) => {
         (
           <Button onClick={onClick} variant="secondary" size="sm">
             
-            <Pencil className='h-4 w-4 mr-2'/>
-            Edit description
+            <PlusCircleIcon className='h-4 w-4 mr-2'/>
+            Add a chapter
           </Button>
           
         )}
         </div>
         
-        { !isEditting ? (
+        { !isCreating ? (
           <div className=' text-sm'>
-              {course.description}
+              
           </div>
         ): (
         
@@ -82,7 +86,7 @@ const FormDescription = ({course}: {course: Course}) => {
             <FormField 
               disabled={isSubmitting}
               control={form.control}
-              name="description"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   
@@ -109,4 +113,4 @@ const FormDescription = ({course}: {course: Course}) => {
    );
 }
  
-export default FormDescription
+export default FormChapter

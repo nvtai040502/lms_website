@@ -28,6 +28,7 @@ model Course {
   @@index([categoryId])
 
   attachments Attachment[]
+  chapters Chapter[]
 }
 
 model Category {
@@ -45,6 +46,23 @@ model Attachment {
 
   name String
   url String
+
+  courseId String
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  @@index([courseId])
+}
+
+model Chapter {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title String
+  description String? @db.Text
+  videoUrl String? @db.Text
+  position Int
+  isPublished Boolean @default(false)
+  isFree Boolean @default(false)
 
   courseId String
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
