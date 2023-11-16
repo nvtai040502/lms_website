@@ -64,7 +64,7 @@ const ChapterIdPage = async ({params}: {params: {chapterId:string, courseId: str
             </Button>
           </Link>
           <h1 className="text-2xl font-medium">
-            Course setup
+            Chapter setup
           </h1>
           <div className="text-sm">
             Complete all fields ({completeFields}/{totalFields})

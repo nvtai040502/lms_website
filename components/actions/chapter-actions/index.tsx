@@ -1,12 +1,10 @@
 "use client"
-import { ActionTooltip } from "@/components/action-tooltip";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { Chapter, Course } from "@prisma/client";
 import axios from "axios";
-import { Terminal, Trash } from "lucide-react";
 import { useState } from "react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import DeleteChapter from "./delete-chapter/intex";
 
 
 interface ChapterActionsProps {
@@ -18,10 +16,11 @@ const ChapterActions = ({course, chapter}: ChapterActionsProps) => {
   const [isLoading, setIsLoading] = useState(false)
   
   const onPublish = async () => {
-    setIsPublished(prevIsPublished => !prevIsPublished); 
+    
     try {
       setIsLoading(true)
       await axios.patch(`/api/courses/${course.id}/chapters/${chapter.id}/is-publish`, { isPublished: !isPublished });
+      setIsPublished(prevIsPublished => !prevIsPublished); 
       !isPublished ? (
         toast({
           title: "Publish Chappter Success",
@@ -36,12 +35,14 @@ const ChapterActions = ({course, chapter}: ChapterActionsProps) => {
       console.error("Error publishing chapter:", error);
       toast({
         title: "Something went wrong",
+        description: "Perhaps you haven't completed all the fields yet"
       })
     } finally {
       setIsLoading(false)
     }
   }
-
+  
+  
   return ( 
     <div className="flex items-center justify-center gap-4">
       {
@@ -52,12 +53,10 @@ const ChapterActions = ({course, chapter}: ChapterActionsProps) => {
         ): (
           <Button onClick={onPublish} disabled={isLoading} variant="secondary" size="sm">UnPublish</Button>
         )
-
       }
 
-      <ActionTooltip label="Delete Chapter" side="top" delayDuration={50}>
-        <Button variant="destructive" size="sm"><Trash/></Button>
-      </ActionTooltip>
+      <DeleteChapter course={course} chapter={chapter} />
+
     </div>
    );
 }
