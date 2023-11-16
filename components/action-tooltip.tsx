@@ -11,17 +11,19 @@ import React from "react";
 interface ActionTooltipProps {
   label: string;
   side?: React.ComponentProps<typeof TooltipContent>['side'];
+  delayDuration?: React.ComponentProps<typeof Tooltip>["delayDuration"]
   children: React.ReactNode;
 }
 
 export const ActionTooltip = ({
   label,
-  side = "right",
+  side="right",
+  delayDuration= 500,
   children,
 }: ActionTooltipProps) => {
   return (
     <TooltipProvider>
-      <Tooltip>
+      <Tooltip delayDuration={delayDuration}>
         <TooltipTrigger asChild>
           {children}
         </TooltipTrigger>

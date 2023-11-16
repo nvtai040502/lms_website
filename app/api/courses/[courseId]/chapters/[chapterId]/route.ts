@@ -8,11 +8,23 @@ const { Video } = new Mux(
   process.env.MUX_SECRET_KEY!  
 )
 
-export async function PATCH (req:Request, {params}: {params: {chapterId: string}}) {
+export async function PATCH (req:Request, {params}: {params: {courseId: string, chapterId: string}}) {
   try {
-    const { userId } = auth()
+    const { userId } = auth();
+
     if (!userId) {
-      return null
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const ownCourse = await db.course.findUnique({
+      where: {
+        id: params.courseId,
+        userId,
+      }
+    });
+
+    if (!ownCourse) {
+      return new NextResponse("Unauthorized", { status: 401 });
     }
     
     const { title, description, videoUrl} = await req.json()

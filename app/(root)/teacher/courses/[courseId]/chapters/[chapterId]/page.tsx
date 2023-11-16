@@ -1,8 +1,11 @@
+import ChapterActions from "@/components/actions/chapter-actions";
 import ChapterFormDescription from "@/components/chapters-form/form-description";
 import ChapterFormTitle from "@/components/chapters-form/form-title";
 import ChapterFormVideo from "@/components/chapters-form/form-video";
+import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
-import { LayoutDashboard } from "lucide-react";
+import { AlertTriangle, ArrowLeft, LayoutDashboard, Trash } from "lucide-react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 const ChapterIdPage = async ({params}: {params: {chapterId:string, courseId: string}}) => {
@@ -37,17 +40,39 @@ const ChapterIdPage = async ({params}: {params: {chapterId:string, courseId: str
   ]
   const totalFields = requiredFields.length
   const completeFields = requiredFields.filter(Boolean).length
-  return ( 
-    <div className="p-6">
-      <div className="flex flex-col gap-y-2">
-        <h1 className="text-2xl font-medium">
-          Course setup
-        </h1>
-        <div className="text-sm">
-          Complete all fields ({completeFields}/{totalFields})
-        </div>
-      </div>
 
+  
+  return ( 
+    <>
+    {!chapter.isPublished && (
+      <div className="dark:bg-yellow-700 bg-yellow-200/80 flex items-center justify-center p-4 gap-2">
+        <AlertTriangle />
+        <p className="text-center">
+          This chapter is unpublished. It will not be visible in the course
+        </p>
+      </div>
+    )}
+    <div className="p-6 ">
+      <div className=" flex justify-between items-center ">
+        <div className="flex flex-col gap-y-2">
+          <Link 
+            href={`/teacher/courses/${params.courseId}`}
+          >
+            <Button variant="link" className="flex items-center justify-center p-0">
+              <ArrowLeft className="h-4 w-4 mr-2"/>
+              Back to course setup
+            </Button>
+          </Link>
+          <h1 className="text-2xl font-medium">
+            Course setup
+          </h1>
+          <div className="text-sm">
+            Complete all fields ({completeFields}/{totalFields})
+          </div>
+        </div>
+
+        <ChapterActions course={course} chapter={chapter}/>
+      </div>
 
       <div className="flex justify-between items-center w-full mt-16">
         <div className="grid md:grid-cols-2 gap-16 grid-cols-1 w-full ">
@@ -70,6 +95,7 @@ const ChapterIdPage = async ({params}: {params: {chapterId:string, courseId: str
         </div>
       </div>
     </div>
+    </>
    );
 }
  
