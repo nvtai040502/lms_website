@@ -8,6 +8,7 @@ import { LayoutDashboard } from "lucide-react"
 import FormPrice from "@/components/form/form-price"
 import FormAttachment from "@/components/form/form-attachment"
 import FormChapter from "@/components/form/form-chapter"
+import CourseActions from "@/components/actions/course-actions"
 
 
 const CourseIdPage = async ({
@@ -50,7 +51,6 @@ const CourseIdPage = async ({
     course.description,
     course.imageUrl,
     course.categoryId,
-    course.price,
     chapters.length > 0 ? [chapters] : []
   ]
 
@@ -59,15 +59,17 @@ const CourseIdPage = async ({
 
   return (
     <div className="p-6">
-      <div className="flex flex-col gap-y-2">
-        <h1 className="text-2xl font-medium">
-          Course setup
-        </h1>
-        <div className="text-sm">
-          Complete all fields ({completeFields}/{totalFields})
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-y-2">
+          <h1 className="text-2xl font-medium">
+            Course setup
+          </h1>
+          <div className="text-sm">
+            Complete all fields ({completeFields}/{totalFields})
+          </div>
         </div>
+        <CourseActions course={course} />
       </div>
-
 
       <div className="flex justify-between items-center w-full mt-16">
         <div className="grid md:grid-cols-2 gap-16 grid-cols-1 w-full ">
