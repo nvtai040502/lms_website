@@ -6,6 +6,7 @@ import { Course } from "@prisma/client";
 import axios from "axios";
 import { Trash } from "lucide-react";
 import { useState } from "react";
+import DeleteCourse from "./delete-course";
 
 
 interface CourseActionsProps {
@@ -55,9 +56,8 @@ const CourseActions = ({course}: CourseActionsProps) => {
         )
       }
 
-      <ActionTooltip label="Delete Course" side="top" delayDuration={50}>
-        <Button disabled={isLoading} variant="destructive" size="sm"><Trash/></Button>
-      </ActionTooltip>
+      <DeleteCourse course={course} />
+      
     </div>
    );
 }

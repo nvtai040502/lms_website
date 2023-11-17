@@ -23,7 +23,7 @@ const CourseIdPage = async ({
   })
 
   if (!course) {
-    return redirect("/")
+    return redirect("/teacher")
   }
 
   const category = await db.category.findFirst({
