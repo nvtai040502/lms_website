@@ -1,13 +1,27 @@
-import { Button } from "@/components/ui/button"
-import CreateCourseModal from "@/components/create-course"
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
+import { DataTable } from "@/components/data-table";
+import { columns } from "@/components/data-table/columns";
 
 const CoursePage = async () => {
-  
+  const { userId } = auth();
+
+  if (!userId) {
+    return redirect("/");
+  }
+
+  const courses = await db.course.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
   return (
     <div>
-      <CreateCourseModal >
-       <Button variant="secondary">New Course</Button>
-       </CreateCourseModal>
+      <DataTable columns={columns} data={courses} />
     </div>
   )
 }

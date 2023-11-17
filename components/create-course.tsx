@@ -8,6 +8,7 @@ import axios from "axios";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { toast } from "./ui/use-toast";
 
 const formScheme = z.object({
   title: z.string().min(2, {
@@ -30,11 +31,23 @@ const CreateCourseModal = ({children}:CreateCourseModalProps) => {
     }
   })
 
-  const onSubmit = (values: z.infer<typeof formScheme>) => {
-    axios.post("../api/courses", values)
+  const onSubmit = async (values: z.infer<typeof formScheme>) => {
+    try {
+      await axios.post(`/api/courses`, values);
+      toast({
+        title: "Create Course Success"
+      })
+    } catch (error) {
+      console.error("Failed to create course:", error);
+      toast({
+        title: "Some thing went wrong",
+        description: "Can't create a course"
+      })
+    }
+  };
     
     
-  }
+  
   return ( 
     <Dialog>
       <DialogTrigger asChild>
