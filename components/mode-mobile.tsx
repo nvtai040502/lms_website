@@ -4,9 +4,13 @@ import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 import Sidebar from "./sidebar";
+import CourseSidebar from "./sidebar/course-sidebar";
 
+interface ModeMobileProbs {
+  modeSidebar?: "dashboardSidebar" | "courseSidebar"
+}
 
-const ModeMobile = () => {
+const ModeMobile = ({modeSidebar="dashboardSidebar"}: ModeMobileProbs) => {
   return ( 
     <div className="flex items-center ">
       <Sheet>
@@ -14,7 +18,8 @@ const ModeMobile = () => {
             <AlignJustify size={30} />
         </SheetTrigger>
         <SheetContent side="left">
-          <Sidebar />          
+        {modeSidebar === "dashboardSidebar" && <Sidebar />}
+        {modeSidebar === "courseSidebar" && <CourseSidebar />}
         </SheetContent>
       </Sheet>
     </div>

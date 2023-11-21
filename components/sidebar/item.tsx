@@ -29,7 +29,7 @@ const SidebarItem = ({
       variant="outline" 
       className={cn(
         "flex items-center justify-normal w-full rounded-none",
-        isActive && " bg-slate-200 dark:bg-slate-700 text-accent-foreground "
+        isActive && " bg-accent  text-accent-foreground "
       )}
     >
       <Icon

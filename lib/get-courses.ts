@@ -5,6 +5,16 @@ const getCourses = async () => {
     const courses = await db.course.findMany({
       where: {
         isPublished: false
+      },
+      include: {
+        chapters: {
+          where: {
+            isPublished: false
+          },
+          orderBy: {
+            position: "asc"
+          }
+        }
       }
     });
     return courses;

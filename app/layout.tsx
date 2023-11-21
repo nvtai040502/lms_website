@@ -3,9 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 import { ThemeProvider } from '@/components/providers/theme-provider'
-import Sidebar from '@/components/sidebar'
-import Headbar from '@/components/headbar'
-import StudentMode from '@/lib/mode/student-mode'
+
 import { Toaster } from "@/components/ui/toaster"
 
 
@@ -31,11 +29,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className='hidden md:flex'>
-              <Sidebar />
-            </div>
-            <Headbar />
-           
+            
+            
+            
             {children}
             <Toaster />
             

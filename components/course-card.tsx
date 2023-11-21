@@ -1,11 +1,11 @@
 import { formatPrice } from "@/lib/format-price";
-import { Course } from "@prisma/client";
+import { Chapter, Course } from "@prisma/client";
 import { BookOpenIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 interface CourseCardProps {
-  course: Course
+  course: Course & {chapters: Chapter[]}
 }
 const CourseCard = ({
   course
@@ -43,7 +43,7 @@ const CourseCard = ({
             <div className="flex items-center gap-x-1 text-slate-500 dark:text-slate-200">
               <BookOpenIcon />
               <span>
-                1 Chapters
+                {course.chapters.length} Chapters
               </span>
             </div>
           

@@ -19,14 +19,14 @@ const Headbar = () => {
       <div className="inline-flex items-center gap-4 ">
         {isTeacherPage ? (
           <Link href="/">
-            <Button size="sm" variant="secondary">
+            <Button size="sm" variant="outline">
               <LogOut className="h-4 w-4 mr-2" />
               Exit
             </Button>
           </Link>
         ) : (
-          <Link href="/teacher">
-            <Button size="sm" variant="secondary">Teacher Mode</Button>
+          <Link href="/teacher/courses">
+            <Button size="sm" variant="outline">Teacher Mode</Button>
           </Link>
         )}
         <ModeToggle />

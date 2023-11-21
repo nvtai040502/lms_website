@@ -10,14 +10,12 @@ export default async function Home() {
   const courses = await getCourses()
   return (
     
-  <div className="md:pl-72 " >
+  <div className="" >
       
-    <div  className="grid grid-cols-4 gap-4 ">
+    <div  className="grid grid-cols-4 gap-4 p-4">
       {courses.map((course) => (
         <div key={course.id}>
           <CourseCard course={course} />
-
-          
 
 
           </div>
