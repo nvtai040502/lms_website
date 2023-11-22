@@ -2,16 +2,23 @@ import { db } from "@/lib/db";
 import { Attachment, Chapter } from "@prisma/client";
 
 interface GetChapterProps {
-  
+  userId: string;
   courseId: string;
   chapterId: string;
 };
 
 export const getChapter = async ({
+  userId,
   courseId,
   chapterId,
 }: GetChapterProps) => {
   try {
+    const purchase = await db.purchase.findUnique({
+      where: {
+        userId,
+        courseId,
+      }
+    });
 
     const course = await db.course.findUnique({
       where: {
@@ -69,7 +76,7 @@ export const getChapter = async ({
       muxData,
       attachments,
       nextChapter,
-      
+      purchase
     };
   } catch (error) {
     console.log("[GET_CHAPTER]", error);

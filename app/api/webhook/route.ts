@@ -30,6 +30,12 @@ export async function POST(req: Request) {
       return new NextResponse(`Webhook Error: Missing metadata`, { status: 400 });
     }
 
+    await db.purchase.create({
+      data: {
+        courseId: courseId,
+        userId: userId,
+      }
+    });
     
   } else {
     return new NextResponse(`Webhook Error: Unhandled event type ${event.type}`, { status: 200 })

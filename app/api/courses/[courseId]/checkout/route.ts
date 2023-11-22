@@ -16,25 +16,23 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const purchase = await db.purchase.findUnique({
+      where: {
+        userId: user.id,
+        courseId: params.courseId
+      }
+    });
+
+    if (purchase) {
+      return new NextResponse("Already purchased", { status: 400 });
+    }
+
     const course = await db.course.findUnique({
       where: {
         id: params.courseId,
         isPublished: true,
       }
     });
-
-    // const purchase = await db.purchase.findUnique({
-    //   where: {
-    //     userId_courseId: {
-    //       userId: user.id,
-    //       courseId: params.courseId
-    //     }
-    //   }
-    // });
-
-    // if (purchase) {
-    //   return new NextResponse("Already purchased", { status: 400 });
-    // }
 
     if (!course) {
       return new NextResponse("Course not found", { status: 404 });
@@ -49,7 +47,7 @@ export async function POST(
             name: course.title,
             description: course.description!,
           },
-          unit_amount: Math.round(course.price! * 100),
+          unit_amount: Math.round(course.price!),
         }
       }
     ];

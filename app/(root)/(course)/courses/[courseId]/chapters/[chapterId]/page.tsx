@@ -3,20 +3,28 @@ import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/video-player";
 import { formatPrice } from "@/lib/format-price";
 import { getChapter } from "@/lib/get-chapter";
+import { auth } from "@clerk/nextjs";
 import MuxPlayer from "@mux/mux-player-react";
 import { Github, GithubIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 
 const ChapterIdPage = async ({params}: {params: {chapterId:string, courseId:string}}) => {
+  const { userId } = auth();
+  if (!userId) {
+    return redirect("/");
+  }
+     
   const {
     chapter,
     course,
     muxData,
     attachments,
     nextChapter,
+    purchase
   } = await getChapter({
     chapterId: params.chapterId,
     courseId: params.courseId,
+    userId: userId
   });
 
   if (!chapter || !course) {
@@ -38,8 +46,13 @@ const ChapterIdPage = async ({params}: {params: {chapterId:string, courseId:stri
             <h2 className=" font-bold text-primary">
               {chapter.title}
             </h2>
-
-            <CourseEnrollButton price={course.price||0} courseId={params.courseId} />
+            {purchase ? (
+              <div>
+                Purchase
+              </div>
+            ): (
+              <CourseEnrollButton price={course.price||0} courseId={params.courseId} />
+            )}
 
           </div>
         </div>

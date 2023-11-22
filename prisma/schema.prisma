@@ -29,6 +29,7 @@ model Course {
 
   attachments Attachment[]
   chapters Chapter[]
+  purchases Purchase[]
 }
 
 model Category {
@@ -88,4 +89,16 @@ model StripeCustomer {
 
   userId String @unique
   stripeCustomerId String @unique
+}
+
+model Purchase {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  userId String @unique
+
+  courseId String @unique
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  @@index([courseId])
 }
