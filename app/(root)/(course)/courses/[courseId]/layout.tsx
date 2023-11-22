@@ -25,7 +25,7 @@ const CourseIdLayout = async ({
       include: {
         chapters: {
           where: {
-            isPublished: false,
+            isPublished: true,
           },
           
           orderBy: {
@@ -46,7 +46,7 @@ const CourseIdLayout = async ({
       </div>
 
       <div className="md:pl-72">
-        <CourseHeadbar />
+        <CourseHeadbar course={course} />
         {children}
       </div>
     </div>

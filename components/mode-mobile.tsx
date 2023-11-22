@@ -5,12 +5,14 @@ import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
 import Sidebar from "./sidebar";
 import CourseSidebar from "./sidebar/course-sidebar";
+import { Chapter, Course } from "@prisma/client";
 
 interface ModeMobileProbs {
   modeSidebar?: "dashboardSidebar" | "courseSidebar"
+  course: Course & {chapters: Chapter[]}
 }
 
-const ModeMobile = ({modeSidebar="dashboardSidebar"}: ModeMobileProbs) => {
+const ModeMobile = ({modeSidebar="dashboardSidebar", course}: ModeMobileProbs) => {
   return ( 
     <div className="flex items-center ">
       <Sheet>
@@ -19,7 +21,7 @@ const ModeMobile = ({modeSidebar="dashboardSidebar"}: ModeMobileProbs) => {
         </SheetTrigger>
         <SheetContent side="left">
         {modeSidebar === "dashboardSidebar" && <Sidebar />}
-        {modeSidebar === "courseSidebar" && <CourseSidebar />}
+        {modeSidebar === "courseSidebar" && <CourseSidebar course={course}/>}
         </SheetContent>
       </Sheet>
     </div>

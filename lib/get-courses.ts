@@ -4,12 +4,12 @@ const getCourses = async () => {
   try {
     const courses = await db.course.findMany({
       where: {
-        isPublished: false
+        isPublished: true
       },
       include: {
         chapters: {
           where: {
-            isPublished: false
+            isPublished: true
           },
           orderBy: {
             position: "asc"
