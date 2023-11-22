@@ -1,3 +1,4 @@
+import CourseEnrollButton from "@/components/course-enroll-button";
 import { Button } from "@/components/ui/button";
 import VideoPlayer from "@/components/video-player";
 import { formatPrice } from "@/lib/format-price";
@@ -38,7 +39,8 @@ const ChapterIdPage = async ({params}: {params: {chapterId:string, courseId:stri
               {chapter.title}
             </h2>
 
-            <Button variant="outline" size="sm"> Enroll for {formatPrice(course.price || 0)}</Button>
+            <CourseEnrollButton price={course.price||0} courseId={params.courseId} />
+
           </div>
         </div>
           <div className="grid grid-cols-3 gap-x-2">
