@@ -1,5 +1,5 @@
-import CourseHeadbar from "@/components/headbar/course-headbar";
-import CourseSidebar from "@/components/sidebar/course-sidebar";
+import Headbar from "@/components/headbar";
+import Sidebar from "@/components/sidebar";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
@@ -41,12 +41,12 @@ const CourseIdLayout = async ({
   return ( 
     <div className="">
       <div className="hidden md:flex">
-        <CourseSidebar course={course} />
+        <Sidebar modeSidebar="course" course={course} />
         
       </div>
 
-      <div className="md:pl-72">
-        <CourseHeadbar course={course} />
+      <div className="md:pl-72 pt-14">
+        <Headbar modeHeadbar="course" course={course} />
         {children}
       </div>
     </div>

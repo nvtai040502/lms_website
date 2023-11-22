@@ -23,14 +23,14 @@ const CourseSidebarItem = ({ chapter, courseId }: {chapter: Chapter, courseId: s
         size="lg" 
         variant="outline" 
         className={cn(
-          "flex items-center justify-normal w-full rounded-none",
+          "flex items-center justify-normal w-full rounded-none border-none p-6",
           isActive && " bg-accent  text-accent-foreground "
         )}
       >
         <Icon
           size={22}
           className=
-            "text-slate-500 mr-2"
+            "mr-2"
         />
         {chapter.title} 
       </Button>

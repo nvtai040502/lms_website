@@ -1,9 +1,6 @@
 import { Mode, SidebarRoute } from "@/type";
 import { Compass, Layout} from "lucide-react";
 
-
-
-
 const sidebarRoutes: SidebarRoute[] = [
   {
     icon: Layout,
@@ -17,6 +14,6 @@ const sidebarRoutes: SidebarRoute[] = [
   }
 ];
 
-const studentMode: Mode = {routes: sidebarRoutes}
+const guestMode: Mode = {routes: sidebarRoutes}
 
-export default studentMode
+export default guestMode

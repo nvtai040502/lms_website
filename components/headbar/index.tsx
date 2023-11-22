@@ -1,40 +1,27 @@
-"use client"
-import { UserButton } from "@clerk/nextjs";
-import { Button } from "../ui/button";
-import { usePathname, useRouter } from "next/navigation";
-import ModeMobile from "../mode-mobile";
-import { LogOut } from "lucide-react";
-import Link from "next/link";
-import { ModeToggle } from "../mode-toggle";
+import { Chapter, Course } from "@prisma/client";
+import CourseHeadbar from "./course-headbar";
+import DashboardHeadbar from "./course-dashboard";
+import ModeMobile from "../mode/mode-mobile";
 
-const Headbar = () => {
-  const router = useRouter()
-  const pathname = usePathname()
-  const isTeacherPage = pathname.includes("/teacher")
-  return ( 
-    <div className="items-center flex flex-row w-full h-14 border-b-2 justify-between p-2 md:justify-end">
+interface HeadbarProps {
+  modeHeadbar: "dashboard" | "course"
+  course?: Course & {chapters: Chapter[]}
+}
+const Headbar = ({modeHeadbar, course}:HeadbarProps) => {
+  const isDashboardMode = modeHeadbar === "dashboard";
+  const isCourseMode = modeHeadbar === "course" && course;
+
+  return (
+    <div className="fixed top-0 left-72 right-0 items-center flex flex-row h-14 border-b justify-between p-2 md:justify-end">
+
       <div className="md:hidden">
-      <ModeMobile />
-      </div>
-      <div className="inline-flex items-center gap-4 ">
-        {isTeacherPage ? (
-          <Link href="/">
-            <Button size="sm" variant="outline">
-              <LogOut className="h-4 w-4 mr-2" />
-              Exit
-            </Button>
-          </Link>
-        ) : (
-          <Link href="/teacher/courses">
-            <Button size="sm" variant="outline">Teacher Mode</Button>
-          </Link>
-        )}
-        <ModeToggle />
-        <UserButton afterSignOutUrl="/" />
+        <ModeMobile modeSidebar={isDashboardMode ? "dashboard" : "course"} course={isCourseMode ? course : undefined} />
       </div>
       
+      {isDashboardMode && <DashboardHeadbar />}
+      {isCourseMode && <CourseHeadbar course={course!} />}
     </div>
-   );
+  );
 }
  
-export default Headbar ;
+export default Headbar;

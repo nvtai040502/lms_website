@@ -1,33 +1,24 @@
-"use client"
-import SidebarHeader from "./header"
-import SidebarItem from "./item"
-import studentMode from "@/lib/mode/student-mode";
-import { usePathname } from "next/navigation";
-import teacherMode from "@/lib/mode/teacher-mode";
+import { Chapter, Course } from "@prisma/client";
+import DashboardSidebar from "./dashboard-sidebar";
+import CourseSidebar from "./course-sidebar";
 
-const Sidebar = () => {
-  const pathname = usePathname()
-  const isPageTeacher = pathname.includes("/teacher")
-  const mode = isPageTeacher ? teacherMode : studentMode
-
+interface SidebarProps {
+  modeSidebar: "dashboard" | "course"
+  course?: Course & {chapters: Chapter[]}
+}
+const Sidebar = ({modeSidebar, course}:SidebarProps) => {
   return ( 
-    <div className="absolute w-72 h-screen flex-col md:border-r-2">
-      <div className="h-14">
-        <SidebarHeader />
-      </div>
-      
-      <div className="my-2">
-        {mode.routes.map((route) => (
-          
-        <SidebarItem 
-          icon={route.icon}
-          label={route.label}
-          href={route.href}
-        />
-        ))}
-      </div>
+    <div className="fixed top-0 left-0 w-72 h-screen flex-col md:border-r">
+
+      {modeSidebar === "dashboard" && <DashboardSidebar />}
+
+      {modeSidebar === "course" && course && (
+        <CourseSidebar course={course} />
+      )}
+
     </div>
    );
 }
  
+
 export default Sidebar;

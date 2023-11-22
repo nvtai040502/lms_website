@@ -1,11 +1,10 @@
 "use client"
-import { LucideIcon } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { SidebarRoute } from "@/type";
 
-const SidebarItem = ({
+const DashboardSidebarItem = ({
   icon: Icon,
   label,
   href
@@ -28,18 +27,18 @@ const SidebarItem = ({
       size="lg" 
       variant="outline" 
       className={cn(
-        "flex items-center justify-normal w-full rounded-none",
-        isActive && " bg-accent  text-accent-foreground "
+        "flex items-center justify-normal w-full rounded-none border-none p-6",
+        isActive && "bg-accent  text-accent-foreground "
       )}
     >
       <Icon
         size={22}
         className=
-          "text-slate-500 mr-2"
+          "mr-2"
       />
       {label}
     </Button>
    );
 }
  
-export default SidebarItem;
+export default DashboardSidebarItem;

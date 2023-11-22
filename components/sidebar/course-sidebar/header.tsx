@@ -5,25 +5,23 @@ const CourseSidebarHeader = (
   {course}: {course: Course}
 ) => {
   return ( 
-    <div className="h-20">
-      <div className="inline-flex gap-2 w-full justify-center items-center h-full">
-        {
-          course.imageUrl && (
-            <Image
-              className="rounded-full object-cover"
-              height={40}
-              width={40}
-              alt="logo"
-              src={course.imageUrl}
-            />
-          )
-        }
+    <div className="flex gap-2 justify-center items-center p-2 border-b h-36 ">
+      {
+        course.imageUrl && (
+          <Image
+            className="rounded-full object-cover"
+            height={40}
+            width={40}
+            alt="logo"
+            src={course.imageUrl}
+          />
+        )
+      }
+      
+      <p className="font-bold text-primary">
+        {course.title}
         
-        <p className="font-bold text-primary">
-          {course.title}
-          
-        </p>
-      </div>
+      </p>
     </div>
    );
 }
