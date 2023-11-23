@@ -1,14 +1,9 @@
-import FormTitle from "@/components/form/form-title"
-import FormDescription from "@/components/form/form-description"
 import { db } from "@/lib/db"
 import { redirect } from "next/navigation"
-import FormImage from "@/components/form/form-image"
-import FormCategory from "@/components/form/form-category"
-import { LayoutDashboard } from "lucide-react"
-import FormPrice from "@/components/form/form-price"
-import FormAttachment from "@/components/form/form-attachment"
-import FormChapter from "@/components/form/form-chapter"
+import { CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react"
 import CourseActions from "@/components/actions/course-actions"
+import FormCourseSetup from "@/components/form/form-course-setup"
+import { IconBadge } from "@/components/icon-badge"
 
 
 const CourseIdPage = async ({
@@ -23,19 +18,10 @@ const CourseIdPage = async ({
   })
 
   if (!course) {
-    return redirect("/teacher")
+    return redirect("/teacher/courses")
   }
-
-  const category = await db.category.findFirst({
-    where: {
-      id: course.categoryId
-    }
-  })
-
-  if (!category) {
-    return null
-  }
-
+  
+  
   const chapters = await db.chapter.findMany({
     where: {
       courseId: course.id
@@ -51,6 +37,7 @@ const CourseIdPage = async ({
     course.description,
     course.imageUrl,
     course.categoryId,
+    course.price,
     chapters.length > 0 ? [chapters] : []
   ]
 
@@ -76,34 +63,34 @@ const CourseIdPage = async ({
           
           <div className="flex flex-col gap-y-6">
             <div className="flex items-center gap-x-2">
-              <LayoutDashboard />
+            <IconBadge icon={LayoutDashboard}/>
               <h2 className="text-xl">
                 Customize your course
               </h2>
             </div>
-            <FormTitle course={course}/>
-            <FormDescription course={course}/>
-            <FormImage course={course} />
-            <FormCategory course={course} categoryName={category.name} />
+            <FormCourseSetup course={course} formType="title" />
+            <FormCourseSetup course={course} formType="description" />
+            <FormCourseSetup course={course} formType="image" />
+            <FormCourseSetup course={course} formType="category"/>
           </div>
 
         
           <div className="flex flex-col gap-y-6">
             <div className="flex items-center gap-x-2">
-              <LayoutDashboard />
-              <h2 className="text-xl">
-                Course chapters
+              <IconBadge icon={ListChecks}/>
+                <h2 className="text-xl">
+                  Course chapters
               </h2>
             </div>
-              <FormChapter course={course} chapters= {chapters}/>
+              <FormCourseSetup course={course} formType="chapter" />
+
             <div className="flex items-center gap-x-2">
-              <LayoutDashboard />
-              <h2 className="text-xl">
-                Sell your course
-              </h2>
+              <IconBadge icon={CircleDollarSign}/>
+                <h2 className="text-xl">
+                  Sell your course
+                </h2>
             </div>
-            <FormPrice course={course}/>
-            <FormAttachment course={course}/>
+            <FormCourseSetup course={course} formType="price"/>
             
 
           </div>

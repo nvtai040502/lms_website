@@ -17,7 +17,8 @@ import { ActionTooltip } from "@/components/action-tooltip";
 interface ChaptersListProps {
   items: Chapter[];
   onReorder: (updateData: { id: string; position: number }[]) => void;
-  onEdit: (id: string) => void
+  onEdit: (id: string) => void,
+  
 };
 
 export const ChaptersList = ({

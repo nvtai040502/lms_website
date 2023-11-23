@@ -12,7 +12,7 @@ const Headbar = ({modeHeadbar, course}:HeadbarProps) => {
   const isCourseMode = modeHeadbar === "course" && course;
 
   return (
-    <div className="fixed top-0 left-72 right-0 items-center flex flex-row h-14 border-b justify-between p-2 md:justify-end">
+    <div className="fixed top-0 md:left-72 left-0 right-0 items-center flex flex-row h-14 border-b justify-between p-2 bg-background md:justify-end">
 
       <div className="md:hidden">
         <ModeMobile modeSidebar={isDashboardMode ? "dashboard" : "course"} course={isCourseMode ? course : undefined} />

@@ -9,51 +9,54 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { toast } from "./ui/use-toast";
+import { useRouter } from "next/navigation";
 
 const formScheme = z.object({
   title: z.string().min(2, {
     message: "Title must be at least 2 characters"
   }),
-  category: z.string().min(2, {
-    message: "Category must be at least 2 characters"
-  })
 })
 
 interface CreateCourseModalProps {
   children: React.ReactNode
 }
+
 const CreateCourseModal = ({children}:CreateCourseModalProps) => {
   const form = useForm<z.infer<typeof formScheme>>({
     resolver: zodResolver(formScheme),
     defaultValues: {
       title: "",
-      category: ""
     }
   })
 
+  const { isSubmitting } = form.formState;
+  const router = useRouter()
+
   const onSubmit = async (values: z.infer<typeof formScheme>) => {
     try {
-      await axios.post(`/api/courses`, values);
+      
+      const response = await axios.post("/api/courses", values);
+      router.push(`/teacher/courses/${response.data.id}`);
+
       toast({
         title: "Create Course Success"
       })
+
     } catch (error) {
       console.error("Failed to create course:", error);
       toast({
         title: "Some thing went wrong",
         description: "Can't create a course"
       })
-    }
+    } 
   };
-    
-    
   
   return ( 
     <Dialog>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="grid gap-6 w-[1000px]">
+      <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Name Your Course</DialogTitle>
           <DialogDescription>
@@ -61,8 +64,9 @@ const CreateCourseModal = ({children}:CreateCourseModalProps) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
+              disabled={isSubmitting}
               control={form.control}
               name="title"
               render={({ field }) => (
@@ -70,7 +74,6 @@ const CreateCourseModal = ({children}:CreateCourseModalProps) => {
                   <FormLabel>Course Title</FormLabel>
                   <FormControl>
                     <Input 
-                    className="dark:bg-zinc-700 bg-zinc-300/50"
                     placeholder="Enter title for your course" 
                     {...field} />
                   </FormControl>
@@ -79,24 +82,7 @@ const CreateCourseModal = ({children}:CreateCourseModalProps) => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Course Category</FormLabel>
-                  <FormControl>
-                    <Input 
-                    className="dark:bg-zinc-700 bg-zinc-300/50 "
-                    placeholder="Enter category of your course" 
-                    {...field} />
-                  </FormControl>
-                  
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button variant="secondary">Create</Button>
+            <Button disabled={isSubmitting} variant="outline">Continue</Button>
           </form>
         </Form>
         

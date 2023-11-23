@@ -1,20 +1,20 @@
-import { UploadDropzone, UploadButton } from "@/lib/uploadthing"
+import { UploadDropzone } from "@/lib/uploadthing"
 import Image from "next/image"
 import "@uploadthing/react/styles.css";
 import { X } from "lucide-react";
 import { Button } from "./ui/button";
-import MuxPlayer from "@mux/mux-player-react";
-import { MuxData } from "@prisma/client";
 
 interface FileUploadProps {
   endpoint: "courseImage" | "courseAttachment" | "chapterVideo"
   value: string
   onChange: (url?: string) => void
+  isSubmitting?:boolean
 }
 export const FileUpload = ({
   endpoint,
   value,
   onChange,
+  isSubmitting
 }: FileUploadProps) => {
   
   const fileType = value?.split(".").pop()
@@ -30,6 +30,7 @@ export const FileUpload = ({
         />
         <Button
             onClick={() => onChange("")}
+            disabled={isSubmitting}
             className=" rounded-none absolute top-0 right-0 "
             variant="destructive"
             size="sm"
@@ -57,6 +58,7 @@ export const FileUpload = ({
         onClientUploadComplete={(res) => {
           onChange(res?.[0].url);
         }}
+        
         onUploadError={(error: Error) => {
           console.log(error);
         }}

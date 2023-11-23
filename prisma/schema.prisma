@@ -20,37 +20,23 @@ model Course {
   title String
   description String? @db.Text
   imageUrl String? @db.Text
-  price Float?
+  price Float @default(0)
   isPublished Boolean @default(false)
 
-  categoryId String
-  category Category @relation(fields: [categoryId], references: [id])
+  categoryId String?
+  category Category? @relation(fields: [categoryId], references: [id])
   @@index([categoryId])
 
-  attachments Attachment[]
   chapters Chapter[]
   purchases Purchase[]
 }
 
 model Category {
   id String @id @default(uuid())
-  
-  name String
+
+  name String @unique
 
   courses Course[]
-}
-
-model Attachment {
-  id String @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  name String
-  url String
-
-  courseId String
-  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  @@index([courseId])
 }
 
 model Chapter {

@@ -10,22 +10,12 @@ export async function POST (req:Request) {
       return null
     }
     
-    const { title, category } = await req.json()
-    
-    
-
-    const categoryDB = await db.category.create({
-      data: {
-        name: category,
-        
-      },
-    });
+    const { title } = await req.json()    
 
     const course = await db.course.create({
       data: {
         title: title,
         userId: userId,
-        categoryId: categoryDB.id
       }
     })
     return NextResponse.json(course)

@@ -53,40 +53,59 @@ export async function DELETE (req:Request, {params}: {params: {courseId: string}
   }
 }
 
-export async function PATCH (req:Request, {params}: {params: {courseId: string}}) {
+export async function PATCH(req: Request, { params }: { params: { courseId: string } }) {
   try {
-    const { userId } = auth()
+    const { userId } = auth();
+
     if (!userId) {
-      return null
+      return new NextResponse("Unauthorized", { status: 401 });
     }
     
-    const values = await req.json()
+    // Destructuring request body
+    const { title, description, price, categoryName } = await req.json();
     
+    let categoryId = null;
+
+    if (categoryName) {
+      // Check if category exists in the database
+      const foundCategory = await db.category.findUnique({
+        where: {
+          name: categoryName,
+        },
+      });
+
+      // If category exists, assign its ID
+      if (foundCategory) {
+        categoryId = foundCategory.id;
+      } else {
+        // If category doesn't exist, create a new one
+        const newCategory = await db.category.create({
+          data: {
+            name: categoryName,
+          },
+        });
+        categoryId = newCategory.id;
+      }
+    }
+
+    // Update the course with the provided courseId and userId
     const course = await db.course.update({
       where: {
-        userId: userId,
-        id: params.courseId
+        userId,
+        id: params.courseId,
       },
       data: {
-        ...values,
-      }
-    })
+        price,
+        categoryId,
+        title,
+        description,
+      },
+    });
 
-    if (values.category) {
-      const categoryDB = await db.category.update({
-        where: {
-          id: course.categoryId
-        },
-        data: {
-          name: values.category
-        }
-      })
-      return NextResponse.json(categoryDB)
-    }
-
-    return NextResponse.json(course)
+    // Return the updated course information
+    return NextResponse.json(course);
   } catch (error) {
-    console.log(["COURSE PATCH"], error)
-    return new NextResponse("Internal Error", {status: 500})
+    console.log(["COURSE PATCH"], error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

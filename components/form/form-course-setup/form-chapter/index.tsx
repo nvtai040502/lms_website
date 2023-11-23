@@ -3,15 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { PlusCircleIcon, X } from 'lucide-react';
+import { Loader2, PlusCircleIcon, X } from 'lucide-react';
 import {  useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from "zod"
 import axios from 'axios';
-import { useToast } from '../../ui/use-toast';
+import { useToast } from '../../../ui/use-toast';
 import { Chapter, Course } from '@prisma/client';
 import { ChaptersList } from './chapters-list';
-import Loading from '@/components/loading';
 import { useRouter } from 'next/navigation';
 
 const formScheme = z.object({
@@ -26,6 +25,19 @@ interface FormChapterProps {
 }
 
 const FormChapter = ({course, chapters}: FormChapterProps) => {
+  const form = useForm<z.infer<typeof formScheme>>({
+    resolver: zodResolver(formScheme),
+    defaultValues: {
+      title: ""
+    }
+  })
+
+  const {isSubmitting}  = form.formState
+  const [isCreating, setIsCreating] = useState(false)
+  const { toast } = useToast()
+  const router = useRouter()
+  const [isUpdating, setIsUpdating] = useState(false);
+
   const onSubmit = async (values: z.infer<typeof formScheme>) => {
     await axios.post(`/api/courses/${course.id}/chapters`, values)
     toast({
@@ -33,8 +45,9 @@ const FormChapter = ({course, chapters}: FormChapterProps) => {
     })
   }
 
-  
-  const [isUpdating, setIsUpdating] = useState(false);
+  const onClose = () => setIsCreating(false);
+  const onClick = () => setIsCreating(true);
+
 
   const onReorder = async (updateData: { id: string; position: number }[]) => {
     try {
@@ -53,53 +66,35 @@ const FormChapter = ({course, chapters}: FormChapterProps) => {
       setIsUpdating(false);
     }
   }
-
-  const form = useForm<z.infer<typeof formScheme>>({
-    resolver: zodResolver(formScheme),
-    defaultValues: {
-      title: ""
-    }
-  })
-
-  const {isSubmitting, isValid}  = form.formState
-
-  const [isCreating, setIsCreating] = useState(false)
-  const onClose = () => {
-    setIsCreating(false)
-  }
-  const onClick = () => {
-    setIsCreating(true)
-  }
-  const { toast } = useToast()
   
-  const router = useRouter()
   const onEdit = (id:string) => {
     router.push(`/teacher/courses/${course.id}/chapters/${id}`)
   }
 
   return ( 
-    <div className='dark:bg-gray-600 rounded-md bg-gray-200 grid gap-y-2 p-4'>
+    <div className='relative p-2 flex gap-2 flex-col'>
       
       {isUpdating && (
-        <Loading />
+        <div className="absolute h-full w-full bg-slate-500/20 dark:bg-slate-500/40 top-0 right-0 rounded-m flex items-center justify-center">
+        <Loader2 className="animate-spin h-6 w-6 text-sky-700" />
+      </div>
       )}
-      
         <div className='flex justify-between items-center font-medium'>
             Course Chapter
           
           { isCreating ? (
           
-          <Button onClick={onClose} variant="secondary" size="sm" disabled={isSubmitting}>
+          <Button onClick={onClose} variant="outline" size="sm" disabled={isSubmitting}>
             
           <X className='h-4 w-4 mr-2'/>
           Cancel
         </Button>
         ):
         (
-          <Button onClick={onClick} variant="secondary" size="sm">
+          <Button onClick={onClick} variant="outline" size="sm" disabled={isUpdating}>
             
             <PlusCircleIcon className='h-4 w-4 mr-2'/>
-            Add a chapter
+            Add
           </Button>
           
         )}
@@ -126,10 +121,7 @@ const FormChapter = ({course, chapters}: FormChapterProps) => {
                   
                   <FormControl>
                     <Input 
-                    
-                    className="dark:bg-zinc-700 bg-zinc-300/50"
-                    
-                    placeholder="Enter title for your course" 
+                    placeholder="Enter title for your chapter" 
                     {...field} />
                   </FormControl>
                   
@@ -138,7 +130,7 @@ const FormChapter = ({course, chapters}: FormChapterProps) => {
               )}
             />
             
-            <Button variant="secondary" disabled={!isValid || isSubmitting}>Save</Button>
+            <Button variant="outline" disabled={isSubmitting}>Add</Button>
           </form>
         </Form>
 )}
