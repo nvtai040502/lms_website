@@ -6,7 +6,7 @@ import { Trash } from "lucide-react";
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
 import { useState } from "react";
-import { Chapter, Course } from "@prisma/client";
+import { Course } from "@prisma/client";
 
 const DeleteCourse = ({course}: {course:Course}) => {
   const [isLoading, setIsLoading] = useState(false)

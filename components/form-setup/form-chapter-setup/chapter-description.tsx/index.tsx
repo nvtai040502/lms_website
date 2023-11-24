@@ -1,78 +1,74 @@
 "use client"
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LayoutGrid, Pencil, X } from 'lucide-react';
 import {  useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from "zod"
 import axios from 'axios';
-import { useToast } from '../ui/use-toast';
+
 import { Chapter, Course } from '@prisma/client';
 
+import { useToast } from '@/components/ui/use-toast';
+import { Editor } from '@/components/form-setup/form-chapter-setup/chapter-description.tsx/editor';
+import { Preview } from '@/components/form-setup/form-chapter-setup/chapter-description.tsx/preivew';
+
 const formScheme = z.object({
-  title: z.string().min(2, {
+  description: z.string().min(2, {
     message: "Title must be at least 2 characters"
   })
 })
 
-const ChapterFormTitle = ({course, chapter}: {course:Course ,chapter: Chapter}) => {
+const ChapterFormDescription = ({course, chapter}: {course:Course ,chapter: Chapter}) => {
   const onSubmit = async (values: z.infer<typeof formScheme>) => {
     await axios.patch(`/api/courses/${course.id}/chapters/${chapter.id}`, values)
     toast({
-      title: "Updated Title Course Success",
+      title: "Updated Description Course Success",
     })
   }
 
   const form = useForm<z.infer<typeof formScheme>>({
     resolver: zodResolver(formScheme),
     defaultValues: {
-      title: chapter.title 
+      description: chapter.description || ""
     }
   })
 
-  const {isSubmitting, isValid}  = form.formState
+  const {isSubmitting}  = form.formState
 
   const [isEditting, setIsEditting] = useState(false)
-  const onClose = () => {
-    setIsEditting(false)
-  }
-  const onClick = () => {
-    
-    setIsEditting(true)
-    
-    
-  }
+  const onClose = () => setIsEditting(false);
+  const onClick = () => setIsEditting(true);
   const { toast } = useToast()
   
 
   return ( 
-    <div className='dark:bg-gray-600 rounded-md bg-gray-200 grid gap-y-2 p-4'>
+    <div className='flex gap-2 flex-col'>
         <div className='flex justify-between items-center font-medium'>
-          Chapter Title
+          Chapter description
           { isEditting ? (
           
-          <Button onClick={onClose} variant="secondary" size="sm" disabled={isSubmitting}>
+          <Button onClick={onClose} variant="outline" size="sm" disabled={isSubmitting}>
             
           <X className='h-4 w-4 mr-2'/>
           Cancel
         </Button>
         ):
         (
-          <Button onClick={onClick} variant="secondary" size="sm">
+          <Button onClick={onClick} variant="outline" size="sm">
             
             <Pencil className='h-4 w-4 mr-2'/>
-            Edit title
+            Edit
           </Button>
           
         )}
         </div>
         
         { !isEditting ? (
-          <div className=' text-sm'>
-              {chapter.title}
-          </div>
+            <Preview
+            value={chapter.description || ""}
+          />
         ): (
         
         <Form {...form}>
@@ -80,17 +76,13 @@ const ChapterFormTitle = ({course, chapter}: {course:Course ,chapter: Chapter}) 
             <FormField 
               disabled={isSubmitting}
               control={form.control}
-              name="title"
+              name="description"
               render={({ field }) => (
                 <FormItem>
                   
                   <FormControl>
-                    <Input 
-                    
-                    className="dark:bg-zinc-700 bg-zinc-300/50"
-                    
-                    placeholder="Enter title for your course" 
-                    {...field} />
+                    <Editor {...field} />
+
                   </FormControl>
                   
                   <FormMessage />
@@ -98,7 +90,7 @@ const ChapterFormTitle = ({course, chapter}: {course:Course ,chapter: Chapter}) 
               )}
             />
             
-            <Button variant="secondary" disabled={!isValid || isSubmitting}>Save</Button>
+            <Button variant="outline" disabled={isSubmitting}>Save</Button>
           </form>
         </Form>
 )}
@@ -107,4 +99,4 @@ const ChapterFormTitle = ({course, chapter}: {course:Course ,chapter: Chapter}) 
    );
 }
  
-export default ChapterFormTitle
+export default ChapterFormDescription

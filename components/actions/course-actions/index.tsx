@@ -1,10 +1,8 @@
 "use client"
-import { ActionTooltip } from "@/components/action-tooltip";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { Course } from "@prisma/client";
 import axios from "axios";
-import { Trash } from "lucide-react";
 import { useState } from "react";
 import DeleteCourse from "./delete-course";
 

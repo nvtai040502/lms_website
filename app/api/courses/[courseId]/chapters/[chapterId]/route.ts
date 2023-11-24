@@ -87,7 +87,7 @@ export async function PATCH (req:Request, {params}: {params: {courseId: string, 
       return new NextResponse("Unauthorized", { status: 401 });
     }
     
-    const { title, description, videoUrl} = await req.json()
+    const { title, description, videoUrl, isFree} = await req.json()
     
     const chapter = await db.chapter.update({
       where: {
@@ -96,7 +96,8 @@ export async function PATCH (req:Request, {params}: {params: {courseId: string, 
       data: {
         title: title,
         description: description,
-        videoUrl: videoUrl
+        videoUrl: videoUrl,
+        isFree: isFree
       }
     })
 

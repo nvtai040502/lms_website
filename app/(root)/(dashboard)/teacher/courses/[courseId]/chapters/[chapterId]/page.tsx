@@ -1,10 +1,10 @@
 import ChapterActions from "@/components/actions/chapter-actions";
-import ChapterFormDescription from "@/components/chapters-form/form-description";
-import ChapterFormTitle from "@/components/chapters-form/form-title";
-import ChapterFormVideo from "@/components/chapters-form/form-video";
+import FormChapterSetup from "@/components/form-setup/form-chapter-setup";
+import { IconBadge } from "@/components/icon-badge";
+
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
-import { AlertTriangle, ArrowLeft, LayoutDashboard, Trash } from "lucide-react";
+import { AlertTriangle, ArrowLeft, Eye, LayoutDashboard, Trash, Video } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -28,14 +28,11 @@ const ChapterIdPage = async ({params}: {params: {chapterId:string, courseId: str
   }
  
   
-  const muxData = await db.muxData.findUnique({
-    where: {
-      chapterId: chapter.id
-    }
-  })
+  
   const requiredFields = [
     chapter.title,
     chapter.description,
+    chapter.isFree,
     chapter.videoUrl,
   ]
   const totalFields = requiredFields.length
@@ -78,18 +75,35 @@ const ChapterIdPage = async ({params}: {params: {chapterId:string, courseId: str
         <div className="grid md:grid-cols-2 gap-16 grid-cols-1 w-full ">
           
           <div className="flex flex-col gap-y-6">
+            
             <div className="flex items-center gap-x-2">
-              <LayoutDashboard />
+              <IconBadge icon={LayoutDashboard} />
               <h2 className="text-xl">
-                Customize your course
+                Customize your chapter
               </h2>
             </div>
-            <ChapterFormTitle course={course} chapter={chapter}/>
-            <ChapterFormDescription course={course} chapter={chapter}/>
-            <ChapterFormVideo course={course} chapter={chapter} muxData={muxData}/>
+            
+            <FormChapterSetup formType="title" course={course} chapter={chapter} />
+            <FormChapterSetup formType="description" course={course} chapter={chapter} />
+            
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={Eye} />
+              <h2 className="text-xl">
+                Access Settings
+              </h2>
+            </div>
+            <FormChapterSetup formType="access" course={course} chapter={chapter} />
           </div>
 
-        
+            <div className="flex flex-col gap-y-6">
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Video} />
+                <h2 className="text-xl">
+                  Add a video
+                </h2>
+              </div>
+              <FormChapterSetup formType="video" course={course} chapter={chapter} />
+            </div>
           
 
         </div>

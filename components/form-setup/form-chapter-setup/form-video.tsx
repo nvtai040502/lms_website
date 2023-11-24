@@ -1,17 +1,18 @@
 "use client"
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LayoutGrid, Pencil, Video, X } from 'lucide-react';
+import { Pencil, Video, X } from 'lucide-react';
 import {  useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from "zod"
 import axios from 'axios';
-import { useToast } from '../ui/use-toast';
+
 import { Chapter, Course, MuxData } from '@prisma/client';
-import { FileUpload } from '../file-upload';
+
 import MuxPlayer from "@mux/mux-player-react";
+import { useToast } from '@/components/ui/use-toast';
+import { FileUpload } from '@/components/file-upload';
 
 const formScheme = z.object({
   videoUrl: z.string().min(2, {
@@ -40,38 +41,31 @@ const ChapterFormVideo = ({course, chapter, muxData}: ChapterFormVideoProps) => 
     }
   })
 
-  const {isSubmitting, isValid}  = form.formState
+  const {isSubmitting}  = form.formState
 
   const [isEditting, setIsEditting] = useState(false)
-  const onClose = () => {
-    setIsEditting(false)
-  }
-  const onClick = () => {
-    
-    setIsEditting(true)
-    
-    
-  }
+  const onClose = () => setIsEditting(false);
+  const onClick = () => setIsEditting(true);
   const { toast } = useToast()
   
 
   return ( 
-    <div className='dark:bg-gray-600 rounded-md bg-gray-200 grid gap-y-2 p-4'>
+    <div className='flex gap-2 flex-col'>
         <div className='flex justify-between items-center font-medium'>
           Chapter Video
           { isEditting ? (
           
-          <Button onClick={onClose} variant="secondary" size="sm" disabled={isSubmitting}>
+          <Button onClick={onClose} variant="outline" size="sm" disabled={isSubmitting}>
             
           <X className='h-4 w-4 mr-2'/>
           Cancel
         </Button>
         ):
         (
-          <Button onClick={onClick} variant="secondary" size="sm">
+          <Button onClick={onClick} variant="outline" size="sm">
             
             <Pencil className='h-4 w-4 mr-2'/>
-            Edit video
+            Edit
           </Button>
           
         )}
@@ -80,8 +74,8 @@ const ChapterFormVideo = ({course, chapter, muxData}: ChapterFormVideoProps) => 
         { !isEditting ? (
 
           !chapter.videoUrl ? (
-            <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
-              <Video className="h-10 w-10 text-slate-500" />
+            <div className="flex items-center justify-center h-60 bg-accent rounded-md">
+              <Video className="h-10 w-10 " />
             </div>
           ) : (
             <div className="flex aspect-video ">
@@ -105,7 +99,7 @@ const ChapterFormVideo = ({course, chapter, muxData}: ChapterFormVideoProps) => 
                 <FormItem>
                   
                   <FormControl>
-                  <div className="dark:bg-gray-300 bg-white">
+                  <div className="bg-accent">
                     <FileUpload
                       endpoint="chapterVideo"
                       value={field.value}
@@ -119,7 +113,7 @@ const ChapterFormVideo = ({course, chapter, muxData}: ChapterFormVideoProps) => 
               )}
             />
             
-            <Button variant="secondary" disabled={!isValid || isSubmitting}>Save</Button>
+            <Button variant="outline" disabled={isSubmitting}>Save</Button>
           </form>
         </Form>
 )}

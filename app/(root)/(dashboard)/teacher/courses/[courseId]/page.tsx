@@ -2,7 +2,7 @@ import { db } from "@/lib/db"
 import { redirect } from "next/navigation"
 import { CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react"
 import CourseActions from "@/components/actions/course-actions"
-import FormCourseSetup from "@/components/form/form-course-setup"
+import FormCourseSetup from "@/components/form-setup/form-course-setup"
 import { IconBadge } from "@/components/icon-badge"
 
 
