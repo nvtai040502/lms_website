@@ -62,7 +62,7 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
     }
     
     // Destructuring request body
-    const { title, description, price, categoryName } = await req.json();
+    const { title, description, price, categoryName, imageUrl } = await req.json();
     
     let categoryId = null;
 
@@ -88,18 +88,25 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
       }
     }
 
+    const courseData: { [key: string]: any } = {
+      price,
+      title,
+      description,
+      imageUrl
+    };
+
+    // Only update categoryId if categoryName is provided
+    if (categoryName) {
+      courseData.categoryId = categoryId;
+    }
+
     // Update the course with the provided courseId and userId
     const course = await db.course.update({
       where: {
         userId,
         id: params.courseId,
       },
-      data: {
-        price,
-        categoryId,
-        title,
-        description,
-      },
+      data: courseData
     });
 
     // Return the updated course information

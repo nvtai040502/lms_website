@@ -11,8 +11,8 @@ import axios from 'axios';
 import { Chapter, Course } from '@prisma/client';
 
 import { useToast } from '@/components/ui/use-toast';
-import { Editor } from '@/components/form-setup/form-chapter-setup/chapter-description.tsx/editor';
-import { Preview } from '@/components/form-setup/form-chapter-setup/chapter-description.tsx/preivew';
+import { Editor } from '@/components/editor';
+import { Preview } from '@/components/preivew';
 
 const formScheme = z.object({
   description: z.string().min(2, {

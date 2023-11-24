@@ -32,7 +32,6 @@ const ChapterIdPage = async ({params}: {params: {chapterId:string, courseId: str
   const requiredFields = [
     chapter.title,
     chapter.description,
-    chapter.isFree,
     chapter.videoUrl,
   ]
   const totalFields = requiredFields.length
